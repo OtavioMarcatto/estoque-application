@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Banco de dados
+*.db
+*.db-shm
+*.db-wal
+
+# Variáveis de ambiente (NUNCA versionar)
+.env
+
+# Testes e cobertura
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Build / empacotamento
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Type checking / lint
+.mypy_cache/
+.ruff_cache/
+
+# Docker
+.dockerenv
+
+# Node (frontend futuro)
+node_modules/
+dist/
+
+# Arquivos internos Claude
+claude/

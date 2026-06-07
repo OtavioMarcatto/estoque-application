@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% set active = "produtos" %}
+{% block title %}Produtos — Estoque{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-gray-800">Produtos</h1>
+  <a href="/produtos/novo"
+     class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+    + Novo produto
+  </a>
+</div>
+
+<!-- Busca -->
+<form method="get" action="/produtos" class="mb-6 flex gap-2">
+  <input
+    type="text"
+    name="search"
+    value="{{ search }}"
+    placeholder="Buscar por nome ou código…"
+    class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+  />
+  <button type="submit"
+    class="bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 text-sm px-4 py-2 rounded-lg transition-colors">
+    Buscar
+  </button>
+  {% if search %}
+  <a href="/produtos" class="text-sm text-gray-500 hover:text-gray-700 self-center ml-1">Limpar</a>
+  {% endif %}
+</form>
+
+<!-- Tabela -->
+{% if produtos %}
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+  <table class="min-w-full text-sm">
+    <thead class="bg-gray-50 border-b border-gray-200">
+      <tr>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">Código</th>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">Nome</th>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">Categoria</th>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">Fornecedor</th>
+        <th class="text-right px-4 py-3 font-semibold text-gray-600">Qtd</th>
+        <th class="text-right px-4 py-3 font-semibold text-gray-600">Preço Venda</th>
+        <th class="px-4 py-3"></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100" id="lista-produtos">
+      {% for produto in produtos %}
+      <tr id="produto-{{ produto.id }}" class="hover:bg-gray-50 transition-colors">
+        <td class="px-4 py-3 font-mono text-gray-700">{{ produto.codigo }}</td>
+        <td class="px-4 py-3 font-medium">
+          {{ produto.nome }}
+          {% if produto.estoque_baixo %}
+          <span class="ml-2 inline-block bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full font-semibold">Estoque baixo</span>
+          {% endif %}
+        </td>
+        <td class="px-4 py-3 text-gray-500">{{ produto.categoria.nome if produto.categoria else "—" }}</td>
+        <td class="px-4 py-3 text-gray-500">{{ produto.fornecedor.nome if produto.fornecedor else "—" }}</td>
+        <td class="px-4 py-3 text-right {% if produto.estoque_baixo %}text-red-600 font-semibold{% else %}text-gray-700{% endif %}">
+          {{ produto.quantidade }}
+        </td>
+        <td class="px-4 py-3 text-right text-gray-700">R$ {{ "%.2f"|format(produto.preco_venda) }}</td>
+        <td class="px-4 py-3 text-right">
+          <div class="flex items-center justify-end gap-2">
+            <a href="/movimentacoes/nova?produto_id={{ produto.id }}"
+               class="text-xs text-indigo-600 hover:underline">Movimentar</a>
+            <a href="/produtos/{{ produto.id }}"
+               class="text-xs text-gray-600 hover:underline">Editar</a>
+            <button
+              hx-delete="/produtos/{{ produto.id }}"
+              hx-target="#produto-{{ produto.id }}"
+              hx-swap="outerHTML"
+              hx-confirm="Excluir '{{ produto.nome }}'? Esta ação não pode ser desfeita."
+              class="text-xs text-red-500 hover:text-red-700 transition-colors">
+              Excluir
+            </button>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="mt-3 text-xs text-gray-400">{{ produtos|length }} produto(s) encontrado(s)</p>
+
+{% else %}
+<div class="text-center py-16 bg-white rounded-xl border border-gray-200">
+  <p class="text-gray-400 text-sm">Nenhum produto encontrado.</p>
+  <a href="/produtos/novo" class="mt-3 inline-block text-indigo-600 text-sm hover:underline">Cadastrar primeiro produto</a>
+</div>
+{% endif %}
+{% endblock %}

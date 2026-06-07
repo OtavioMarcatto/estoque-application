@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% set active = "relatorios" %}
+{% block title %}Relatório de Estoque — Estoque{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-gray-800">Relatório de Estoque</h1>
+  <div class="flex gap-2">
+    <a href="/relatorios/estoque"
+       class="text-sm px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-medium">Posição atual</a>
+    <a href="/relatorios/movimentacoes"
+       class="text-sm px-3 py-1.5 rounded-lg bg-white border border-gray-300 text-gray-600 hover:bg-gray-50">Movimentações</a>
+  </div>
+</div>
+
+<!-- Cards de resumo -->
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+    <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Total de produtos</p>
+    <p class="text-3xl font-bold text-gray-800">{{ total_produtos }}</p>
+  </div>
+  <div class="bg-white rounded-xl border {% if total_baixo_estoque > 0 %}border-red-200 bg-red-50{% else %}border-gray-200{% endif %} shadow-sm p-4">
+    <p class="text-xs {% if total_baixo_estoque > 0 %}text-red-500{% else %}text-gray-500{% endif %} uppercase tracking-wide mb-1">Estoque baixo</p>
+    <p class="text-3xl font-bold {% if total_baixo_estoque > 0 %}text-red-600{% else %}text-gray-800{% endif %}">{{ total_baixo_estoque }}</p>
+  </div>
+</div>
+
+{% if produtos_baixo_estoque %}
+<div class="mb-6">
+  <h2 class="text-base font-semibold text-red-700 mb-3">⚠ Produtos com estoque baixo</h2>
+  <div class="bg-red-50 border border-red-200 rounded-xl overflow-hidden">
+    <table class="min-w-full text-sm">
+      <thead class="bg-red-100 border-b border-red-200">
+        <tr>
+          <th class="text-left px-4 py-2 font-semibold text-red-700">Produto</th>
+          <th class="text-right px-4 py-2 font-semibold text-red-700">Atual</th>
+          <th class="text-right px-4 py-2 font-semibold text-red-700">Mínimo</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-red-100">
+        {% for p in produtos_baixo_estoque %}
+        <tr>
+          <td class="px-4 py-2"><a href="/produtos/{{ p.id }}" class="font-medium text-red-800 hover:underline">{{ p.nome }}</a></td>
+          <td class="px-4 py-2 text-right text-red-600 font-bold">{{ p.quantidade }}</td>
+          <td class="px-4 py-2 text-right text-red-500">{{ p.quantidade_minima }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+<!-- Tabela completa -->
+<h2 class="text-base font-semibold text-gray-700 mb-3">Posição completa do estoque</h2>
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+  <table class="min-w-full text-sm">
+    <thead class="bg-gray-50 border-b border-gray-200">
+      <tr>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">Código</th>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">Produto</th>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">Categoria</th>
+        <th class="text-right px-4 py-3 font-semibold text-gray-600">Qtd</th>
+        <th class="text-right px-4 py-3 font-semibold text-gray-600">Mín.</th>
+        <th class="text-right px-4 py-3 font-semibold text-gray-600">Venda</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      {% for p in produtos %}
+      <tr class="{% if p.estoque_baixo %}bg-red-50{% else %}hover:bg-gray-50{% endif %} transition-colors">
+        <td class="px-4 py-3 font-mono text-gray-600">{{ p.codigo }}</td>
+        <td class="px-4 py-3 font-medium">{{ p.nome }}</td>
+        <td class="px-4 py-3 text-gray-500">{{ p.categoria.nome if p.categoria else "—" }}</td>
+        <td class="px-4 py-3 text-right {% if p.estoque_baixo %}text-red-600 font-bold{% else %}text-gray-700{% endif %}">{{ p.quantidade }}</td>
+        <td class="px-4 py-3 text-right text-gray-400">{{ p.quantidade_minima }}</td>
+        <td class="px-4 py-3 text-right text-gray-700">R$ {{ "%.2f"|format(p.preco_venda) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

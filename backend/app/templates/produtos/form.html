@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% set active = "produtos" %}
+{% block title %}{% if produto %}Editar produto{% else %}Novo produto{% endif %} — Estoque{% endblock %}
+
+{% block content %}
+<div class="flex items-center gap-3 mb-6">
+  <a href="/produtos" class="text-gray-400 hover:text-gray-600 text-sm">← Produtos</a>
+  <h1 class="text-2xl font-bold text-gray-800">
+    {% if produto %}Editar produto{% else %}Novo produto{% endif %}
+  </h1>
+</div>
+
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 max-w-2xl">
+  <form method="post" action="{% if produto %}/produtos/{{ produto.id }}{% else %}/produtos/novo{% endif %}" class="space-y-5">
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Código *</label>
+        <input type="text" name="codigo" required
+               value="{{ form_data.get('codigo', produto.codigo if produto else '') }}"
+               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nome *</label>
+        <input type="text" name="nome" required
+               value="{{ form_data.get('nome', produto.nome if produto else '') }}"
+               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+      <textarea name="descricao" rows="2"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">{{ produto.descricao if produto and produto.descricao else '' }}</textarea>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Preço de compra (R$)</label>
+        <input type="number" name="preco_compra" step="0.01" min="0"
+               value="{{ produto.preco_compra if produto else '0.00' }}"
+               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Preço de venda (R$)</label>
+        <input type="number" name="preco_venda" step="0.01" min="0"
+               value="{{ produto.preco_venda if produto else '0.00' }}"
+               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      {% if not produto %}
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Quantidade inicial</label>
+        <input type="number" name="quantidade" min="0" value="0"
+               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+      </div>
+      {% endif %}
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Quantidade mínima</label>
+        <input type="number" name="quantidade_minima" min="0"
+               value="{{ produto.quantidade_minima if produto else '0' }}"
+               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+        <select name="categoria_id"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          <option value="">— Selecione —</option>
+          {% for cat in categorias %}
+          <option value="{{ cat.id }}" {% if produto and produto.categoria_id == cat.id %}selected{% endif %}>
+            {{ cat.nome }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Fornecedor</label>
+        <select name="fornecedor_id"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          <option value="">— Selecione —</option>
+          {% for forn in fornecedores %}
+          <option value="{{ forn.id }}" {% if produto and produto.fornecedor_id == forn.id %}selected{% endif %}>
+            {{ forn.nome }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 pt-2">
+      <button type="submit"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-6 py-2 rounded-lg transition-colors">
+        {% if produto %}Salvar alterações{% else %}Cadastrar produto{% endif %}
+      </button>
+      <a href="/produtos" class="text-sm text-gray-500 hover:text-gray-700">Cancelar</a>
+    </div>
+
+  </form>
+</div>
+{% endblock %}

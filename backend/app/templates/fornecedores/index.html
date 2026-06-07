@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% set active = "fornecedores" %}
+{% block title %}Fornecedores — Estoque{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-gray-800">Fornecedores</h1>
+  <a href="/fornecedores/novo"
+     class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+    + Novo fornecedor
+  </a>
+</div>
+
+{% if fornecedores %}
+<div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+  <table class="min-w-full text-sm">
+    <thead class="bg-gray-50 border-b border-gray-200">
+      <tr>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">Nome</th>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">CNPJ</th>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">Telefone</th>
+        <th class="text-left px-4 py-3 font-semibold text-gray-600">E-mail</th>
+        <th class="px-4 py-3"></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      {% for forn in fornecedores %}
+      <tr id="fornecedor-{{ forn.id }}" class="hover:bg-gray-50 transition-colors">
+        <td class="px-4 py-3 font-medium">{{ forn.nome }}</td>
+        <td class="px-4 py-3 font-mono text-gray-600">{{ forn.cnpj or "—" }}</td>
+        <td class="px-4 py-3 text-gray-600">{{ forn.telefone or "—" }}</td>
+        <td class="px-4 py-3 text-gray-600">{{ forn.email or "—" }}</td>
+        <td class="px-4 py-3 text-right">
+          <div class="flex items-center justify-end gap-2">
+            <a href="/fornecedores/{{ forn.id }}" class="text-xs text-gray-600 hover:underline">Editar</a>
+            <button
+              hx-delete="/fornecedores/{{ forn.id }}"
+              hx-target="#fornecedor-{{ forn.id }}"
+              hx-swap="outerHTML"
+              hx-confirm="Excluir '{{ forn.nome }}'?"
+              class="text-xs text-red-500 hover:text-red-700 transition-colors">
+              Excluir
+            </button>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="text-center py-16 bg-white rounded-xl border border-gray-200">
+  <p class="text-gray-400 text-sm">Nenhum fornecedor cadastrado.</p>
+  <a href="/fornecedores/novo" class="mt-3 inline-block text-indigo-600 text-sm hover:underline">Cadastrar primeiro fornecedor</a>
+</div>
+{% endif %}
+{% endblock %}
