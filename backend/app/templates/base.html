@@ -3,38 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}Estoque{% endblock %}</title>
+  <title>{% block title %}Sonix Equipamentos LTDA.{% endblock %}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/htmx.org@2.0.4"></script>
   <style>
     [x-cloak] { display: none !important; }
     .htmx-indicator { opacity: 0; transition: opacity 200ms ease-in; }
     .htmx-request .htmx-indicator { opacity: 1; }
+    select option { background-color: #0f172a; color: #cbd5e1; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+<body class="bg-slate-950 text-slate-300 min-h-screen flex flex-col">
 
-  <!-- Navbar -->
-  <nav class="bg-white border-b border-gray-200 shadow-sm">
+  <nav class="bg-slate-900/80 backdrop-blur-sm border-b border-slate-800 sticky top-0 z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14">
-      <a href="/produtos" class="text-lg font-bold text-indigo-600 tracking-tight">Estoque</a>
-      <div class="flex items-center gap-6 text-sm font-medium text-gray-600">
-        <a href="/produtos"        class="hover:text-indigo-600 transition-colors {% if active == 'produtos' %}text-indigo-600 font-semibold{% endif %}">Produtos</a>
-        <a href="/categorias"      class="hover:text-indigo-600 transition-colors {% if active == 'categorias' %}text-indigo-600 font-semibold{% endif %}">Categorias</a>
-        <a href="/fornecedores"    class="hover:text-indigo-600 transition-colors {% if active == 'fornecedores' %}text-indigo-600 font-semibold{% endif %}">Fornecedores</a>
-        <a href="/movimentacoes"   class="hover:text-indigo-600 transition-colors {% if active == 'movimentacoes' %}text-indigo-600 font-semibold{% endif %}">Movimentações</a>
-        <a href="/relatorios/estoque" class="hover:text-indigo-600 transition-colors {% if active == 'relatorios' %}text-indigo-600 font-semibold{% endif %}">Relatórios</a>
+      <a href="/produtos" class="text-base font-bold text-teal-400 tracking-tight">Sonix Equipamentos</a>
+      <div class="flex items-center gap-6 text-sm font-medium text-slate-400">
+        <a href="/produtos"          class="hover:text-teal-400 transition-colors {% if active == 'produtos' %}text-teal-400{% endif %}">Produtos</a>
+        <a href="/categorias"        class="hover:text-teal-400 transition-colors {% if active == 'categorias' %}text-teal-400{% endif %}">Categorias</a>
+        <a href="/fornecedores"      class="hover:text-teal-400 transition-colors {% if active == 'fornecedores' %}text-teal-400{% endif %}">Fornecedores</a>
+        <a href="/movimentacoes"     class="hover:text-teal-400 transition-colors {% if active == 'movimentacoes' %}text-teal-400{% endif %}">Movimentações</a>
+        <a href="/relatorios/estoque" class="hover:text-teal-400 transition-colors {% if active == 'relatorios' %}text-teal-400{% endif %}">Relatórios</a>
       </div>
     </div>
   </nav>
 
-  <!-- Main -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     {% if errors is defined and errors %}
     <div class="mb-4 space-y-2">
       {% for error in errors %}
-      <div class="bg-red-50 border border-red-200 text-red-800 rounded-lg px-4 py-3 text-sm flex items-center gap-2">
+      <div class="bg-red-900/30 border border-red-800/50 text-red-400 rounded-lg px-4 py-3 text-sm flex items-center gap-2">
         <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
         </svg>
@@ -47,8 +50,8 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="text-center text-xs text-gray-400 py-4 border-t border-gray-100">
-    Estoque &copy; 2026
+  <footer class="text-center text-xs text-slate-600 py-4 border-t border-slate-800">
+    Sonix Equipamentos LTDA. &copy; 2026
   </footer>
 
 </body>

@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from app.models.produto import Produto
 
 
-class TipoMovimentacao(str, enum.Enum):
+class TipoMovimentacao(enum.StrEnum):
     ENTRADA = "ENTRADA"
     SAIDA = "SAIDA"
 

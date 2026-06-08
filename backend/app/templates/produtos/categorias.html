@@ -4,55 +4,53 @@
 
 {% block content %}
 <div class="flex items-center justify-between mb-6">
-  <h1 class="text-2xl font-bold text-gray-800">Categorias</h1>
+  <h1 class="text-2xl font-bold text-white">Categorias</h1>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-  <!-- Form nova categoria -->
-  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-    <h2 class="text-base font-semibold text-gray-700 mb-4">Nova categoria</h2>
+  <div class="bg-slate-900 rounded-xl border border-slate-800 p-6">
+    <h2 class="text-base font-semibold text-slate-200 mb-4">Nova categoria</h2>
     <form method="post" action="/categorias" class="space-y-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Nome *</label>
+        <label class="block text-sm font-medium text-slate-400 mb-1">Nome *</label>
         <input type="text" name="nome" required
-               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+               class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-slate-600" />
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+        <label class="block text-sm font-medium text-slate-400 mb-1">Descrição</label>
         <input type="text" name="descricao"
-               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+               class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-slate-600" />
       </div>
       <button type="submit"
-              class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+              class="bg-teal-500 hover:bg-teal-400 text-slate-950 text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
         Adicionar
       </button>
     </form>
   </div>
 
-  <!-- Lista de categorias -->
-  <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+  <div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
     {% if categorias %}
     <table class="min-w-full text-sm">
-      <thead class="bg-gray-50 border-b border-gray-200">
+      <thead class="bg-slate-950 border-b border-slate-800">
         <tr>
-          <th class="text-left px-4 py-3 font-semibold text-gray-600">Nome</th>
-          <th class="text-left px-4 py-3 font-semibold text-gray-600">Descrição</th>
+          <th class="text-left px-4 py-3 font-semibold text-slate-400 uppercase text-xs tracking-wide">Nome</th>
+          <th class="text-left px-4 py-3 font-semibold text-slate-400 uppercase text-xs tracking-wide">Descrição</th>
           <th class="px-4 py-3"></th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-100">
+      <tbody class="divide-y divide-slate-800">
         {% for cat in categorias %}
-        <tr id="categoria-{{ cat.id }}" class="hover:bg-gray-50 transition-colors">
-          <td class="px-4 py-3 font-medium">{{ cat.nome }}</td>
-          <td class="px-4 py-3 text-gray-500">{{ cat.descricao or "—" }}</td>
+        <tr id="categoria-{{ cat.id }}" class="hover:bg-slate-800/50 transition-colors">
+          <td class="px-4 py-3 font-medium text-slate-200">{{ cat.nome }}</td>
+          <td class="px-4 py-3 text-slate-500">{{ cat.descricao or "—" }}</td>
           <td class="px-4 py-3 text-right">
             <button
               hx-delete="/categorias/{{ cat.id }}"
               hx-target="#categoria-{{ cat.id }}"
               hx-swap="outerHTML"
               hx-confirm="Excluir categoria '{{ cat.nome }}'?"
-              class="text-xs text-red-500 hover:text-red-700 transition-colors">
+              class="text-xs text-red-500 hover:text-red-400 transition-colors">
               Excluir
             </button>
           </td>
@@ -61,7 +59,7 @@
       </tbody>
     </table>
     {% else %}
-    <div class="text-center py-10 text-gray-400 text-sm">Nenhuma categoria cadastrada.</div>
+    <div class="text-center py-10 text-slate-500 text-sm">Nenhuma categoria cadastrada.</div>
     {% endif %}
   </div>
 

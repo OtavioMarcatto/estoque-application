@@ -109,6 +109,7 @@ async def detalhar_produto(
             "categorias": categorias,
             "fornecedores": fornecedores,
             "errors": [],
+            "form_data": {},
         },
     )
 
