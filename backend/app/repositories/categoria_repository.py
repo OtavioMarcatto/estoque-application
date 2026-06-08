@@ -28,7 +28,9 @@ async def create(db: AsyncSession, data: CategoriaCreate) -> Categoria:
     return categoria
 
 
-async def update(db: AsyncSession, categoria: Categoria, data: CategoriaUpdate) -> Categoria:
+async def update(
+    db: AsyncSession, categoria: Categoria, data: CategoriaUpdate
+) -> Categoria:
     for field, value in data.model_dump(exclude_none=True).items():
         setattr(categoria, field, value)
     await db.commit()

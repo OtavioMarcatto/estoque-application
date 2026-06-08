@@ -25,7 +25,9 @@ async def criar(db: AsyncSession, data: FornecedorCreate) -> Fornecedor:
     return await fornecedor_repository.create(db, data)
 
 
-async def atualizar(db: AsyncSession, fornecedor_id: str, data: FornecedorUpdate) -> Fornecedor:
+async def atualizar(
+    db: AsyncSession, fornecedor_id: str, data: FornecedorUpdate
+) -> Fornecedor:
     fornecedor = await buscar(db, fornecedor_id)
     if data.cnpj:
         existente = await fornecedor_repository.get_by_cnpj(db, data.cnpj)

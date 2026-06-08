@@ -17,4 +17,6 @@ class Categoria(Base, UUIDPrimaryKey, TimestampMixin):
     nome: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
     descricao: Mapped[str | None] = mapped_column(Text, nullable=True)
 
-    produtos: Mapped[list[Produto]] = relationship("Produto", back_populates="categoria")
+    produtos: Mapped[list[Produto]] = relationship(
+        "Produto", back_populates="categoria"
+    )

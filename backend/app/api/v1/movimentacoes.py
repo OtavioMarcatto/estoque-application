@@ -21,7 +21,9 @@ async def listar_movimentacoes(
     db: AsyncSession = Depends(get_db),
 ) -> HTMLResponse:
     tipo_enum = TipoMovimentacao(tipo) if tipo in ("ENTRADA", "SAIDA") else None
-    movimentacoes = await movimentacao_service.listar(db, produto_id=produto_id, tipo=tipo_enum)
+    movimentacoes = await movimentacao_service.listar(
+        db, produto_id=produto_id, tipo=tipo_enum
+    )
     produtos = await produto_service.listar(db)
     return templates.TemplateResponse(
         request,

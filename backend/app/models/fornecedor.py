@@ -20,4 +20,6 @@ class Fornecedor(Base, UUIDPrimaryKey, TimestampMixin):
     email: Mapped[str | None] = mapped_column(String(150), nullable=True)
     endereco: Mapped[str | None] = mapped_column(String(300), nullable=True)
 
-    produtos: Mapped[list[Produto]] = relationship("Produto", back_populates="fornecedor")
+    produtos: Mapped[list[Produto]] = relationship(
+        "Produto", back_populates="fornecedor"
+    )

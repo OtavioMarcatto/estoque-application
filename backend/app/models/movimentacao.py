@@ -21,7 +21,10 @@ class Movimentacao(Base, UUIDPrimaryKey, TimestampMixin):
     __tablename__ = "movimentacoes"
 
     produto_id: Mapped[str] = mapped_column(
-        String(36), ForeignKey("produtos.id", ondelete="CASCADE"), nullable=False, index=True
+        String(36),
+        ForeignKey("produtos.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
     tipo: Mapped[TipoMovimentacao] = mapped_column(
         Enum(TipoMovimentacao), nullable=False

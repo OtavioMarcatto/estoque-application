@@ -28,7 +28,9 @@ async def create(db: AsyncSession, data: FornecedorCreate) -> Fornecedor:
     return fornecedor
 
 
-async def update(db: AsyncSession, fornecedor: Fornecedor, data: FornecedorUpdate) -> Fornecedor:
+async def update(
+    db: AsyncSession, fornecedor: Fornecedor, data: FornecedorUpdate
+) -> Fornecedor:
     for field, value in data.model_dump(exclude_none=True).items():
         setattr(fornecedor, field, value)
     await db.commit()

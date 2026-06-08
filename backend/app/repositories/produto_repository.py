@@ -14,9 +14,7 @@ async def get_all(db: AsyncSession, search: str | None = None) -> list[Produto]:
     stmt = select(Produto).options(*_with_relations()).order_by(Produto.nome)
     if search:
         term = f"%{search}%"
-        stmt = stmt.where(
-            Produto.nome.ilike(term) | Produto.codigo.ilike(term)
-        )
+        stmt = stmt.where(Produto.nome.ilike(term) | Produto.codigo.ilike(term))
     result = await db.execute(stmt)
     return list(result.scalars().all())
 

@@ -23,6 +23,4 @@ class TimestampMixin:
 
 
 class UUIDPrimaryKey:
-    id: Mapped[str] = mapped_column(
-        String(36), primary_key=True, default=generate_uuid
-    )
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)

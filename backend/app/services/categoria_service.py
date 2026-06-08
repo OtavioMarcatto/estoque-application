@@ -24,7 +24,9 @@ async def criar(db: AsyncSession, data: CategoriaCreate) -> Categoria:
     return await categoria_repository.create(db, data)
 
 
-async def atualizar(db: AsyncSession, categoria_id: str, data: CategoriaUpdate) -> Categoria:
+async def atualizar(
+    db: AsyncSession, categoria_id: str, data: CategoriaUpdate
+) -> Categoria:
     categoria = await buscar(db, categoria_id)
     if data.nome:
         existente = await categoria_repository.get_by_nome(db, data.nome)

@@ -13,7 +13,9 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/", response_class=HTMLResponse)
-async def listar_categorias(request: Request, db: AsyncSession = Depends(get_db)) -> HTMLResponse:
+async def listar_categorias(
+    request: Request, db: AsyncSession = Depends(get_db)
+) -> HTMLResponse:
     categorias = await categoria_service.listar(db)
     return templates.TemplateResponse(
         request,
