@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String
+from sqlalchemy import String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKey
@@ -19,6 +19,7 @@ class Fornecedor(Base, UUIDPrimaryKey, TimestampMixin):
     telefone: Mapped[str | None] = mapped_column(String(20), nullable=True)
     email: Mapped[str | None] = mapped_column(String(150), nullable=True)
     endereco: Mapped[str | None] = mapped_column(String(300), nullable=True)
+    descricao: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     produtos: Mapped[list[Produto]] = relationship(
         "Produto", back_populates="fornecedor"

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% set active = "clientes" %}
+{% block title %}Importar Clientes — Estoque{% endblock %}
+
+{% block content %}
+<div class="flex items-center gap-3 mb-6">
+  <a href="/clientes" class="text-slate-500 hover:text-slate-300 text-sm transition-colors">← Clientes</a>
+  <span class="text-slate-700">/</span>
+  <h1 class="text-2xl font-bold text-white">Importar via XLSX</h1>
+</div>
+
+<div class="max-w-2xl space-y-6">
+
+  <!-- Formulário de upload -->
+  <div class="bg-slate-900 rounded-xl border border-slate-800 p-6">
+    <form method="post" action="/clientes/importar" enctype="multipart/form-data" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-400 mb-2">Arquivo .xlsx</label>
+        <input type="file" name="arquivo" accept=".xlsx,.xls" required
+               class="block w-full text-sm text-slate-400
+                      file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-teal-500 file:text-slate-950
+                      hover:file:bg-teal-400 file:cursor-pointer
+                      cursor-pointer" />
+        <p class="mt-2 text-xs text-slate-600">Formatos aceitos: .xlsx, .xls</p>
+      </div>
+      <button type="submit"
+              class="bg-teal-500 hover:bg-teal-400 text-slate-950 text-sm font-semibold px-6 py-2 rounded-lg transition-colors">
+        Importar
+      </button>
+    </form>
+  </div>
+
+  <!-- Resultado da importação -->
+  {% if result is not none %}
+  <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-4">
+    <h2 class="text-base font-semibold text-white">Resultado</h2>
+
+    {% if result.imported > 0 %}
+    <div class="flex items-center gap-3 bg-green-900/20 border border-green-800/40 rounded-lg px-4 py-3">
+      <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+      </svg>
+      <p class="text-green-400 text-sm font-medium">{{ result.imported }} cliente(s) importado(s) com sucesso.</p>
+    </div>
+    {% endif %}
+
+    {% if result.errors %}
+    <div class="space-y-2">
+      <p class="text-sm font-medium text-slate-400">{{ result.errors|length }} linha(s) com problema:</p>
+      <div class="bg-slate-950 rounded-lg border border-slate-800 divide-y divide-slate-800 max-h-60 overflow-y-auto">
+        {% for err in result.errors %}
+        <p class="px-4 py-2 text-xs text-red-400">{{ err }}</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if result.imported == 0 and not result.errors %}
+    <p class="text-slate-500 text-sm">Nenhum dado encontrado no arquivo.</p>
+    {% endif %}
+
+    <a href="/clientes" class="inline-block text-sm text-teal-400 hover:text-teal-300 transition-colors">
+      Ver clientes importados →
+    </a>
+  </div>
+  {% endif %}
+
+  <!-- Dica de formato -->
+  <div class="bg-slate-900/50 rounded-xl border border-slate-800 p-5">
+    <h3 class="text-sm font-semibold text-slate-400 mb-3">Colunas reconhecidas automaticamente</h3>
+    <div class="flex flex-wrap gap-2">
+      {% for col in ["codigo","nome","contrato","data_do_pedido","data_da_entrega","descricao_do_pedido","cnpj","cpf","ie","rg","endereco","bairro","cidade","estado","cep","celular","email","responsavel_legal","cpf_responsavel_legal"] %}
+      <span class="bg-slate-800 text-slate-400 text-xs px-2 py-1 rounded font-mono">{{ col }}</span>
+      {% endfor %}
+    </div>
+    <p class="mt-3 text-xs text-slate-600">
+      O importador detecta a linha de cabeçalho automaticamente e aceita variações de nome
+      (ex: "Razão Social" para <span class="font-mono text-slate-500">nome</span>,
+      "Data Pedido" para <span class="font-mono text-slate-500">data_do_pedido</span>).
+      Apenas o campo <span class="font-mono text-slate-500">nome</span> é obrigatório.
+    </p>
+  </div>
+
+</div>
+{% endblock %}

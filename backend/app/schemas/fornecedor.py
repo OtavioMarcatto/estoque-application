@@ -7,6 +7,7 @@ class FornecedorBase(BaseModel):
     telefone: str | None = None
     email: str | None = None
     endereco: str | None = None
+    descricao: str | None = None
 
     @field_validator("nome")
     @classmethod
@@ -33,6 +34,7 @@ class FornecedorUpdate(BaseModel):
     telefone: str | None = None
     email: str | None = None
     endereco: str | None = None
+    descricao: str | None = None
 
 
 class FornecedorResponse(FornecedorBase):

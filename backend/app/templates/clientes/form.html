@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% set active = "clientes" %}
+{% block title %}{% if cliente %}Editar cliente{% else %}Novo cliente{% endif %} — Estoque{% endblock %}
+
+{% block content %}
+<div class="flex items-center gap-3 mb-6">
+  <a href="/clientes" class="text-slate-500 hover:text-slate-300 text-sm transition-colors">← Clientes</a>
+  <span class="text-slate-700">/</span>
+  <h1 class="text-2xl font-bold text-white">
+    {% if cliente %}Editar cliente{% else %}Novo cliente{% endif %}
+  </h1>
+</div>
+
+<div class="bg-slate-900 rounded-xl border border-slate-800 p-6 max-w-3xl">
+  <form method="post" action="{% if cliente %}/clientes/{{ cliente.id }}{% else %}/clientes/novo{% endif %}" class="space-y-6">
+
+    <!-- Identificação -->
+    <div>
+      <h2 class="text-xs font-semibold text-teal-400 uppercase tracking-widest mb-3">Identificação</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">Código</label>
+          <input type="text" name="codigo"
+                 value="{{ form_data.get('codigo', cliente.codigo if cliente and cliente.codigo else '') }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-slate-600" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">Nome *</label>
+          <input type="text" name="nome" required
+                 value="{{ form_data.get('nome', cliente.nome if cliente else '') }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-slate-600" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Pedido -->
+    <div>
+      <h2 class="text-xs font-semibold text-teal-400 uppercase tracking-widest mb-3">Pedido</h2>
+      <div class="grid grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">Contrato</label>
+          <input type="text" name="contrato"
+                 value="{{ form_data.get('contrato', cliente.contrato if cliente and cliente.contrato else '') }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">Data do pedido</label>
+          <input type="date" name="data_do_pedido"
+                 value="{{ cliente.data_do_pedido.strftime('%Y-%m-%d') if cliente and cliente.data_do_pedido else '' }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">Data de entrega</label>
+          <input type="date" name="data_da_entrega"
+                 value="{{ cliente.data_da_entrega.strftime('%Y-%m-%d') if cliente and cliente.data_da_entrega else '' }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+      </div>
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-slate-400 mb-1">Descrição do pedido</label>
+        <textarea name="descricao_do_pedido" rows="2"
+                  class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-slate-600">{{ cliente.descricao_do_pedido if cliente and cliente.descricao_do_pedido else '' }}</textarea>
+      </div>
+    </div>
+
+    <!-- Documentos -->
+    <div>
+      <h2 class="text-xs font-semibold text-teal-400 uppercase tracking-widest mb-3">Documentos</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">CNPJ</label>
+          <input type="text" name="cnpj"
+                 value="{{ form_data.get('cnpj', cliente.cnpj if cliente and cliente.cnpj else '') }}"
+                 placeholder="00.000.000/0000-00"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-slate-600" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">CPF</label>
+          <input type="text" name="cpf"
+                 value="{{ form_data.get('cpf', cliente.cpf if cliente and cliente.cpf else '') }}"
+                 placeholder="000.000.000-00"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-slate-600" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">IE</label>
+          <input type="text" name="ie"
+                 value="{{ form_data.get('ie', cliente.ie if cliente and cliente.ie else '') }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">RG</label>
+          <input type="text" name="rg"
+                 value="{{ form_data.get('rg', cliente.rg if cliente and cliente.rg else '') }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Endereço -->
+    <div>
+      <h2 class="text-xs font-semibold text-teal-400 uppercase tracking-widest mb-3">Endereço</h2>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">Endereço</label>
+          <input type="text" name="endereco"
+                 value="{{ form_data.get('endereco', cliente.endereco if cliente and cliente.endereco else '') }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+        <div class="grid grid-cols-4 gap-4">
+          <div class="col-span-2">
+            <label class="block text-sm font-medium text-slate-400 mb-1">Bairro</label>
+            <input type="text" name="bairro"
+                   value="{{ form_data.get('bairro', cliente.bairro if cliente and cliente.bairro else '') }}"
+                   class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-400 mb-1">CEP</label>
+            <input type="text" name="cep"
+                   value="{{ form_data.get('cep', cliente.cep if cliente and cliente.cep else '') }}"
+                   class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-400 mb-1">UF</label>
+            <input type="text" name="estado" maxlength="2"
+                   value="{{ form_data.get('estado', cliente.estado if cliente and cliente.estado else '') }}"
+                   class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">Cidade</label>
+          <input type="text" name="cidade"
+                 value="{{ form_data.get('cidade', cliente.cidade if cliente and cliente.cidade else '') }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Contato -->
+    <div>
+      <h2 class="text-xs font-semibold text-teal-400 uppercase tracking-widest mb-3">Contato</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">Celular</label>
+          <input type="text" name="celular"
+                 value="{{ form_data.get('celular', cliente.celular if cliente and cliente.celular else '') }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">E-mail</label>
+          <input type="email" name="email"
+                 value="{{ form_data.get('email', cliente.email if cliente and cliente.email else '') }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Responsável -->
+    <div>
+      <h2 class="text-xs font-semibold text-teal-400 uppercase tracking-widest mb-3">Responsável Legal</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">Nome</label>
+          <input type="text" name="responsavel_legal"
+                 value="{{ form_data.get('responsavel_legal', cliente.responsavel_legal if cliente and cliente.responsavel_legal else '') }}"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-1">CPF</label>
+          <input type="text" name="cpf_responsavel_legal"
+                 value="{{ form_data.get('cpf_responsavel_legal', cliente.cpf_responsavel_legal if cliente and cliente.cpf_responsavel_legal else '') }}"
+                 placeholder="000.000.000-00"
+                 class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-slate-600" />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 pt-2 border-t border-slate-800">
+      <button type="submit"
+              class="bg-teal-500 hover:bg-teal-400 text-slate-950 text-sm font-semibold px-6 py-2 rounded-lg transition-colors">
+        {% if cliente %}Salvar alterações{% else %}Cadastrar cliente{% endif %}
+      </button>
+      <a href="/clientes" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Cancelar</a>
+    </div>
+
+  </form>
+</div>
+{% endblock %}

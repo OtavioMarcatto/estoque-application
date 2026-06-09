@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% set active = "pedidos" %}
+{% block title %}Pedidos — Estoque{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-white">Pedidos</h1>
+  <a href="/pedidos/novo"
+     class="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-400 text-slate-950 text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+    + Novo pedido
+  </a>
+</div>
+
+<!-- Filtros -->
+<form method="get" action="/pedidos" class="mb-6 flex gap-3 items-center flex-wrap">
+  <select name="cliente_id"
+          class="bg-slate-900 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+    <option value="">Todos os clientes</option>
+    {% for c in clientes %}
+    <option value="{{ c.id }}" {% if filtro_cliente_id == c.id %}selected{% endif %}>{{ c.nome }}</option>
+    {% endfor %}
+  </select>
+
+  <select name="status"
+          class="bg-slate-900 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+    <option value="">Todos os status</option>
+    {% for s in status_opcoes %}
+    <option value="{{ s.value }}" {% if filtro_status == s.value %}selected{% endif %}>{{ status_labels[s] }}</option>
+    {% endfor %}
+  </select>
+
+  <button type="submit"
+    class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-sm px-4 py-2 rounded-lg transition-colors">
+    Filtrar
+  </button>
+  {% if filtro_cliente_id or filtro_status %}
+  <a href="/pedidos" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Limpar</a>
+  {% endif %}
+</form>
+
+{% if pedidos %}
+<div class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+  <table class="min-w-full text-sm">
+    <thead class="bg-slate-950 border-b border-slate-800">
+      <tr>
+        <th class="text-left px-4 py-3 font-semibold text-slate-400 uppercase text-xs tracking-wide">Nº</th>
+        <th class="text-left px-4 py-3 font-semibold text-slate-400 uppercase text-xs tracking-wide">Cliente</th>
+        <th class="text-left px-4 py-3 font-semibold text-slate-400 uppercase text-xs tracking-wide">Status</th>
+        <th class="text-left px-4 py-3 font-semibold text-slate-400 uppercase text-xs tracking-wide">Data pedido</th>
+        <th class="text-left px-4 py-3 font-semibold text-slate-400 uppercase text-xs tracking-wide">Entrega prev.</th>
+        <th class="text-right px-4 py-3 font-semibold text-slate-400 uppercase text-xs tracking-wide">Itens</th>
+        <th class="text-right px-4 py-3 font-semibold text-slate-400 uppercase text-xs tracking-wide">Total</th>
+        <th class="px-4 py-3"></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-800" id="lista-pedidos">
+      {% for p in pedidos %}
+      <tr id="pedido-{{ p.id }}" class="hover:bg-slate-800/50 transition-colors">
+        <td class="px-4 py-3 font-mono text-slate-400 text-xs">{{ p.numero or "—" }}</td>
+        <td class="px-4 py-3 font-medium text-slate-200">{{ p.cliente.nome }}</td>
+        <td class="px-4 py-3">
+          {% if p.status.value == "pendente" %}
+            <span class="inline-block bg-yellow-900/30 text-yellow-400 border border-yellow-800/40 text-xs px-2 py-0.5 rounded-full font-semibold">Pendente</span>
+          {% elif p.status.value == "em_andamento" %}
+            <span class="inline-block bg-blue-900/30 text-blue-400 border border-blue-800/40 text-xs px-2 py-0.5 rounded-full font-semibold">Em andamento</span>
+          {% elif p.status.value == "concluido" %}
+            <span class="inline-block bg-green-900/30 text-green-400 border border-green-800/40 text-xs px-2 py-0.5 rounded-full font-semibold">Concluído</span>
+          {% else %}
+            <span class="inline-block bg-slate-800 text-slate-400 border border-slate-700 text-xs px-2 py-0.5 rounded-full font-semibold">Cancelado</span>
+          {% endif %}
+        </td>
+        <td class="px-4 py-3 text-slate-400 text-xs whitespace-nowrap">
+          {{ p.data_pedido.strftime("%d/%m/%Y") if p.data_pedido else "—" }}
+        </td>
+        <td class="px-4 py-3 text-slate-400 text-xs whitespace-nowrap">
+          {{ p.data_entrega_prevista.strftime("%d/%m/%Y") if p.data_entrega_prevista else "—" }}
+        </td>
+        <td class="px-4 py-3 text-right text-slate-400">{{ p.itens|length }}</td>
+        <td class="px-4 py-3 text-right text-slate-300 font-medium">R$ {{ "%.2f"|format(p.total) }}</td>
+        <td class="px-4 py-3 text-right">
+          <div class="flex items-center justify-end gap-3">
+            <a href="/pedidos/{{ p.id }}" class="text-xs text-teal-400 hover:text-teal-300 transition-colors">Ver</a>
+            <button
+              hx-delete="/pedidos/{{ p.id }}"
+              hx-target="#pedido-{{ p.id }}"
+              hx-swap="outerHTML"
+              hx-confirm="Excluir pedido de '{{ p.cliente.nome }}'?"
+              class="text-xs text-red-500 hover:text-red-400 transition-colors">
+              Excluir
+            </button>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="mt-3 text-xs text-slate-600">{{ pedidos|length }} pedido(s)</p>
+
+{% else %}
+<div class="text-center py-16 bg-slate-900 rounded-xl border border-slate-800">
+  <p class="text-slate-500 text-sm">Nenhum pedido encontrado.</p>
+  <a href="/pedidos/novo" class="mt-3 inline-block text-teal-400 text-sm hover:text-teal-300">Criar primeiro pedido</a>
+</div>
+{% endif %}
+{% endblock %}

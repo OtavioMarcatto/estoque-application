@@ -56,6 +56,7 @@ async def criar_produto(
     preco_venda: str = Form("0"),
     quantidade: int = Form(0),
     quantidade_minima: int = Form(0),
+    garantia: str = Form(""),
     categoria_id: str = Form(""),
     fornecedor_id: str = Form(""),
     db: AsyncSession = Depends(get_db),
@@ -69,6 +70,7 @@ async def criar_produto(
             preco_venda=preco_venda,  # type: ignore[arg-type]
             quantidade=quantidade,
             quantidade_minima=quantidade_minima,
+            garantia=int(garantia) if garantia.strip() else None,
             categoria_id=categoria_id or None,
             fornecedor_id=fornecedor_id or None,
         )
@@ -124,6 +126,7 @@ async def atualizar_produto(
     preco_compra: str = Form("0"),
     preco_venda: str = Form("0"),
     quantidade_minima: int = Form(0),
+    garantia: str = Form(""),
     categoria_id: str = Form(""),
     fornecedor_id: str = Form(""),
     db: AsyncSession = Depends(get_db),
@@ -136,6 +139,7 @@ async def atualizar_produto(
             preco_compra=preco_compra,  # type: ignore[arg-type]
             preco_venda=preco_venda,  # type: ignore[arg-type]
             quantidade_minima=quantidade_minima,
+            garantia=int(garantia) if garantia.strip() else None,
             categoria_id=categoria_id or None,
             fornecedor_id=fornecedor_id or None,
         )

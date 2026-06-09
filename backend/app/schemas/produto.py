@@ -11,6 +11,7 @@ class ProdutoBase(BaseModel):
     preco_venda: Decimal = Field(default=Decimal("0"), ge=0)
     quantidade: int = Field(default=0, ge=0)
     quantidade_minima: int = Field(default=0, ge=0)
+    garantia: int | None = Field(default=None, ge=0)
     categoria_id: str | None = None
     fornecedor_id: str | None = None
 
@@ -41,6 +42,7 @@ class ProdutoUpdate(BaseModel):
     preco_venda: Decimal | None = None
     quantidade: int | None = None
     quantidade_minima: int | None = None
+    garantia: int | None = None
     categoria_id: str | None = None
     fornecedor_id: str | None = None
 

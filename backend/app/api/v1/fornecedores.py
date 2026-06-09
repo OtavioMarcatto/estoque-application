@@ -41,6 +41,7 @@ async def criar_fornecedor(
     telefone: str = Form(""),
     email: str = Form(""),
     endereco: str = Form(""),
+    descricao: str = Form(""),
     db: AsyncSession = Depends(get_db),
 ) -> RedirectResponse | HTMLResponse:
     try:
@@ -50,6 +51,7 @@ async def criar_fornecedor(
             telefone=telefone or None,
             email=email or None,
             endereco=endereco or None,
+            descricao=descricao or None,
         )
         await fornecedor_service.criar(db, data)
         return RedirectResponse(url="/fornecedores", status_code=303)
@@ -83,6 +85,7 @@ async def atualizar_fornecedor(
     telefone: str = Form(""),
     email: str = Form(""),
     endereco: str = Form(""),
+    descricao: str = Form(""),
     db: AsyncSession = Depends(get_db),
 ) -> RedirectResponse | HTMLResponse:
     try:
@@ -92,6 +95,7 @@ async def atualizar_fornecedor(
             telefone=telefone or None,
             email=email or None,
             endereco=endereco or None,
+            descricao=descricao or None,
         )
         await fornecedor_service.atualizar(db, fornecedor_id, data)
         return RedirectResponse(url="/fornecedores", status_code=303)

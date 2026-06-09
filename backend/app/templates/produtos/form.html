@@ -66,6 +66,14 @@
       </div>
     </div>
 
+    <div>
+      <label class="block text-sm font-medium text-slate-400 mb-1">Garantia (meses)</label>
+      <input type="number" name="garantia" min="0"
+             value="{{ produto.garantia if produto and produto.garantia is not none else '' }}"
+             placeholder="Ex: 12"
+             class="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder-slate-600" />
+    </div>
+
     <div class="grid grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-slate-400 mb-1">Categoria</label>
