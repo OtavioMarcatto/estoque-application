@@ -79,10 +79,10 @@ async def seed() -> None:
             )
 
         print("Banco populado com sucesso!")
-        print(f"  Categorias: 2")
-        print(f"  Fornecedores: 1")
-        print(f"  Produtos: 3")
-        print(f"  Movimentações: 3")
+        print("  Categorias: 2")
+        print("  Fornecedores: 1")
+        print("  Produtos: 3")
+        print("  Movimentações: 3")
 
 
 if __name__ == "__main__":
