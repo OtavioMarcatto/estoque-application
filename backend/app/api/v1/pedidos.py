@@ -42,7 +42,7 @@ def _parse_itens(
     observacoes: list[str],
 ) -> list[PedidoItemCreate]:
     itens = []
-    for pid, qty, preco, obs in zip(produto_ids, quantidades, precos, observacoes):
+    for pid, qty, preco, obs in zip(produto_ids, quantidades, precos, observacoes, strict=False):
         if not pid.strip():
             continue
         itens.append(
