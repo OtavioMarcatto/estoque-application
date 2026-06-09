@@ -42,14 +42,18 @@ def _parse_itens(
     observacoes: list[str],
 ) -> list[PedidoItemCreate]:
     itens = []
-    for pid, qty, preco, obs in zip(produto_ids, quantidades, precos, observacoes, strict=False):
+    for pid, qty, preco, obs in zip(
+        produto_ids, quantidades, precos, observacoes, strict=False
+    ):
         if not pid.strip():
             continue
         itens.append(
             PedidoItemCreate(
                 produto_id=pid.strip(),
                 quantidade=int(qty) if qty.strip() else 1,
-                preco_unitario=Decimal(preco.replace(",", ".")) if preco.strip() else Decimal("0"),
+                preco_unitario=Decimal(preco.replace(",", "."))
+                if preco.strip()
+                else Decimal("0"),
                 observacao=obs.strip() or None,
             )
         )

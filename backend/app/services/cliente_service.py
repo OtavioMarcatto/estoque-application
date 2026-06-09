@@ -203,7 +203,8 @@ async def importar_xlsx(db: AsyncSession, conteudo: bytes) -> ImportResult:
                 contrato=str(values.get("contrato") or "").strip() or None,
                 data_do_pedido=_parse_date(values.get("data_do_pedido")),
                 data_da_entrega=_parse_date(values.get("data_da_entrega")),
-                descricao_do_pedido=str(values.get("descricao_do_pedido") or "").strip() or None,
+                descricao_do_pedido=str(values.get("descricao_do_pedido") or "").strip()
+                or None,
                 cnpj=str(values.get("cnpj") or "").strip() or None,
                 cpf=str(values.get("cpf") or "").strip() or None,
                 ie=str(values.get("ie") or "").strip() or None,
@@ -215,8 +216,12 @@ async def importar_xlsx(db: AsyncSession, conteudo: bytes) -> ImportResult:
                 cep=str(values.get("cep") or "").strip() or None,
                 celular=str(values.get("celular") or "").strip() or None,
                 email=str(values.get("email") or "").strip() or None,
-                responsavel_legal=str(values.get("responsavel_legal") or "").strip() or None,
-                cpf_responsavel_legal=str(values.get("cpf_responsavel_legal") or "").strip() or None,
+                responsavel_legal=str(values.get("responsavel_legal") or "").strip()
+                or None,
+                cpf_responsavel_legal=str(
+                    values.get("cpf_responsavel_legal") or ""
+                ).strip()
+                or None,
             )
             to_import.append(data)
         except Exception as exc:

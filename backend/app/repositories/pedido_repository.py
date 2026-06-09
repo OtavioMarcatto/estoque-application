@@ -51,7 +51,14 @@ async def create(db: AsyncSession, data: PedidoCreate) -> Pedido:
 
 
 async def update(db: AsyncSession, pedido: Pedido, data: PedidoUpdate) -> Pedido:
-    for field in ("numero", "cliente_id", "status", "data_pedido", "data_entrega_prevista", "observacao"):
+    for field in (
+        "numero",
+        "cliente_id",
+        "status",
+        "data_pedido",
+        "data_entrega_prevista",
+        "observacao",
+    ):
         value = getattr(data, field)
         if value is not None:
             setattr(pedido, field, value)

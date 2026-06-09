@@ -27,7 +27,10 @@ class Pedido(Base, UUIDPrimaryKey, TimestampMixin):
 
     numero: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
     cliente_id: Mapped[str] = mapped_column(
-        String(36), ForeignKey("clientes.id", ondelete="RESTRICT"), nullable=False, index=True
+        String(36),
+        ForeignKey("clientes.id", ondelete="RESTRICT"),
+        nullable=False,
+        index=True,
     )
     status: Mapped[StatusPedido] = mapped_column(
         Enum(StatusPedido), nullable=False, default=StatusPedido.PENDENTE
@@ -53,13 +56,18 @@ class PedidoItem(Base, UUIDPrimaryKey):
     __tablename__ = "pedido_itens"
 
     pedido_id: Mapped[str] = mapped_column(
-        String(36), ForeignKey("pedidos.id", ondelete="CASCADE"), nullable=False, index=True
+        String(36),
+        ForeignKey("pedidos.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
     produto_id: Mapped[str] = mapped_column(
         String(36), ForeignKey("produtos.id", ondelete="RESTRICT"), nullable=False
     )
     quantidade: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
-    preco_unitario: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, default=0)
+    preco_unitario: Mapped[Decimal] = mapped_column(
+        Numeric(10, 2), nullable=False, default=0
+    )
     observacao: Mapped[str | None] = mapped_column(String(300), nullable=True)
 
     pedido: Mapped[Pedido] = relationship("Pedido", back_populates="itens")

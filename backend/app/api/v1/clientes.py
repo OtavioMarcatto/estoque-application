@@ -110,9 +110,7 @@ async def criar_cliente(
 
 @router.get("/importar", response_class=HTMLResponse)
 async def form_importar(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse(
-        request, "clientes/upload.html", {"result": None}
-    )
+    return templates.TemplateResponse(request, "clientes/upload.html", {"result": None})
 
 
 @router.post("/importar", response_model=None)

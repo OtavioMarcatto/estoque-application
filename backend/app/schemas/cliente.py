@@ -32,9 +32,22 @@ class ClienteBase(BaseModel):
         return v.strip()
 
     @field_validator(
-        "codigo", "contrato", "cnpj", "cpf", "ie", "rg", "endereco",
-        "bairro", "cidade", "estado", "cep", "celular", "email",
-        "responsavel_legal", "cpf_responsavel_legal", "descricao_do_pedido",
+        "codigo",
+        "contrato",
+        "cnpj",
+        "cpf",
+        "ie",
+        "rg",
+        "endereco",
+        "bairro",
+        "cidade",
+        "estado",
+        "cep",
+        "celular",
+        "email",
+        "responsavel_legal",
+        "cpf_responsavel_legal",
+        "descricao_do_pedido",
     )
     @classmethod
     def vazio_para_none(cls, v: str | None) -> str | None:
